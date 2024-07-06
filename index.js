@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV != "production"){
+  require("dotenv").config();
+}
+
 const express = require("express");
 const app = express();
 const nodeMailer = require("nodemailer");
@@ -14,9 +18,9 @@ app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"/views"));
 
 
-app.get("/blog", (req, res) => {
-  res.render("blog.ejs");
-});
+// app.get("/blog", (req, res) => {
+//   res.render("blog.ejs");
+// });
 
 app.get("/",(req,res) => {
   res.render("index.ejs");
@@ -33,14 +37,14 @@ app.post("/send-email", async (req, res) => {
   let transporter = nodeMailer.createTransport({
     service: "gmail",
     auth: {
-      user: "akashdey1718@gmail.com",
-      pass: "qwlb rain gxsv dgfu",
+      user: process.env.EMAIL,
+      pass: process.env.PASS,
     },
   });
 
   let mailOptions = {
-    from: "akashdey1718@gmail.com",
-    to: "contact@incorpsquare.com",
+    from:  process.env.EMAIL,
+    to:  process.env.SENDER,
     subject: "New Message from Your Website",
     text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
   };
